@@ -23,6 +23,7 @@ package com.iabtcf.utils;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 /**
  * An implementation of the IntIterable based on BitSet.
@@ -59,7 +60,12 @@ public class BitSetIntIterable extends IntIterable {
 
     public static BitSetIntIterable from(final Collection<Integer> values) {
         BitSet bs = new BitSet();
-        values.forEach(bs::set);
+        values.forEach(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer i) {
+                bs.set(i);
+            }
+        });
         return new BitSetIntIterable(bs);
     }
 

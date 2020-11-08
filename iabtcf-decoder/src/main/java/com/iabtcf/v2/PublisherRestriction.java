@@ -24,7 +24,6 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 import com.iabtcf.utils.IntIterable;
-import com.iabtcf.utils.IntIterator;
 
 public class PublisherRestriction {
 
@@ -57,8 +56,8 @@ public class PublisherRestriction {
     @Override
     public String toString() {
         StringJoiner sj = new StringJoiner(", ", "[", "]");
-        for (IntIterator i = getVendorIds().intIterator(); i.hasNext();) {
-            sj.add(i.next().toString());
+        for (Integer i : getVendorIds()) {
+            sj.add(i.toString());
         }
         return "PublisherRestriction{"
                 + "purposeId="

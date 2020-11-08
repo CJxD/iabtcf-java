@@ -41,7 +41,7 @@ import com.iabtcf.v2.RestrictionType;
 
 public class TCStringV2Test {
     private static TCString parse(String consentString) {
-        TCString model = TCString.decode(consentString);
+        TCString model = TCStringDecoder.decode(consentString);
         assertTrue(model instanceof TCStringV2);
         assertEquals(2, model.getVersion());
 
@@ -74,8 +74,8 @@ public class TCStringV2Test {
         TCString tcModel = parse("COtybn4PA_zT4KjACBENAPCIAEBAAECAAIAAAAAAAAAA");
 
         assertEquals(2, tcModel.getVersion());
-        assertEquals(Instant.parse("2020-01-26T17:01:00Z"), tcModel.getCreated());
-        assertEquals(Instant.parse("2021-02-02T17:01:00Z"), tcModel.getLastUpdated());
+        assertEquals(Instant.parse("2020-01-26T17:01:00Z"), Instant.ofEpochMilli(tcModel.getCreated() * 100));
+        assertEquals(Instant.parse("2021-02-02T17:01:00Z"), Instant.ofEpochMilli(tcModel.getLastUpdated() * 100));
         assertEquals(675, tcModel.getCmpId());
         assertEquals(2, tcModel.getCmpVersion());
         assertEquals(1, tcModel.getConsentScreen());
@@ -115,7 +115,7 @@ public class TCStringV2Test {
     public void testCanParseAllParts() {
         TCString tcModel =
                 parse("COrEAV4OrXx94ACABBENAHCIAD-AAAAAAACAAxAAAAgAIAwgAgAAAAEAgQAAAAAEAYQAQAAAACAAAABAAA.IBAgAAAgAIAwgAgAAAAEAAAACA.QAagAQAgAIAwgA.cAAAAAAAITg=");
-        assertEquals(1, tcModel.getPubPurposesConsent().toStream().count());
+        assertEquals(1, tcModel.getPubPurposesConsent().toSet().size());
     }
 
     @Test

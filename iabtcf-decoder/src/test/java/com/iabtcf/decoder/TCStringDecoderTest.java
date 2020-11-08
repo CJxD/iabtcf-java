@@ -52,22 +52,22 @@ public class TCStringDecoderTest {
     @Test(expected = ByteParseException.class)
     public void testReadBeyondBuffer() {
         // bit pattern: 0000011
-        TCString tcString = TCString.decode("Bg");
+        TCString tcString = TCStringDecoder.decode("Bg");
         tcString.getCreated();
     }
 
     @Test(expected = ByteParseException.class)
     public void testStrict() {
-        TCString.decode("CA==");
+        TCStringDecoder.decode("CA==");
     }
 
     @Test
     public void testLazy() {
-        TCString.decode("CA==", DecoderOption.LAZY);
+        TCStringDecoder.decode("CA==", DecoderOption.LAZY);
     }
 
     @Test(expected = ByteParseException.class)
     public void testLazyFailure() {
-        TCString.decode("CA==", DecoderOption.LAZY).getCmpId();
+        TCStringDecoder.decode("CA==", DecoderOption.LAZY).getCmpId();
     }
 }

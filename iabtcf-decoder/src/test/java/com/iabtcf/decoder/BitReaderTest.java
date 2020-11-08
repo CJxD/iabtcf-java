@@ -630,7 +630,7 @@ public class BitReaderTest {
     @Test(expected = ByteParseException.class)
     public void testReadBeyondBuffer() {
         // bit pattern: 0000011
-        TCString tcString = TCString.decode("Bg");
+        TCString tcString = TCStringDecoder.decode("Bg");
         tcString.getCreated();
     }
 

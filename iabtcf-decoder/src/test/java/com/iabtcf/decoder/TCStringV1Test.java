@@ -35,7 +35,7 @@ import org.junit.Test;
 public class TCStringV1Test {
 
     private static TCString parse(String consentString) {
-        TCString model = TCString.decode(consentString);
+        TCString model = TCStringDecoder.decode(consentString);
         assertTrue(model instanceof TCStringV1);
         assertEquals(1, model.getVersion());
 
@@ -44,7 +44,7 @@ public class TCStringV1Test {
 
     @Test
     public void testDecodeCanDetectVersion1() {
-        TCString model = TCString.decode("BObdrPUOevsguAfDqFENCNAAAAAmeAAA");
+        TCString model = TCStringDecoder.decode("BObdrPUOevsguAfDqFENCNAAAAAmeAAA");
         assertTrue(model instanceof TCStringV1);
         assertEquals(1, model.getVersion());
     }
@@ -57,8 +57,8 @@ public class TCStringV1Test {
         assertEquals(234, model.getCmpVersion());
         assertEquals(5, model.getConsentScreen());
         assertEquals("EN", model.getConsentLanguage());
-        assertEquals(Instant.parse("2019-02-04T21:16:05.200Z"), model.getCreated());
-        assertEquals(Instant.parse("2019-04-09T14:35:10.200Z"), model.getLastUpdated());
+        assertEquals(Instant.parse("2019-02-04T21:16:05.200Z"), Instant.ofEpochMilli(model.getCreated() * 100));
+        assertEquals(Instant.parse("2019-04-09T14:35:10.200Z"), Instant.ofEpochMilli(model.getLastUpdated() * 100));
         assertEquals(141, model.getVendorListVersion());
         assertTrue(model.getPurposesConsent().isEmpty());
         assertFalse(model.getPurposesConsent().contains(1));

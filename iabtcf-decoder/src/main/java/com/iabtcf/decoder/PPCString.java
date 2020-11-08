@@ -29,12 +29,11 @@ import static com.iabtcf.utils.FieldDefs.V1_LAST_UPDATED;
 import static com.iabtcf.utils.FieldDefs.V1_VENDOR_LIST_VERSION;
 import static com.iabtcf.utils.FieldDefs.V1_VERSION;
 
-import java.time.Instant;
-import java.util.Base64;
 import java.util.Objects;
 
 import com.iabtcf.exceptions.ByteParseException;
 import com.iabtcf.exceptions.UnsupportedVersionException;
+import com.iabtcf.utils.Base64;
 import com.iabtcf.utils.BitReader;
 import com.iabtcf.utils.FieldDefs;
 import com.iabtcf.utils.IntIterable;
@@ -59,12 +58,12 @@ public class PPCString {
         return bbv.readBits6(V1_VERSION);
     }
 
-    public Instant getCreated() {
-        return Instant.ofEpochMilli(bbv.readBits36(V1_CREATED) * 100);
+    public long getCreated() {
+        return bbv.readBits36(V1_CREATED);
     }
 
-    public Instant getLastUpdated() {
-        return Instant.ofEpochMilli(bbv.readBits36(V1_LAST_UPDATED) * 100);
+    public long getLastUpdated() {
+        return bbv.readBits36(V1_LAST_UPDATED);
     }
 
     public int getCmpId() {

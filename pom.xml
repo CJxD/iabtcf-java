@@ -237,7 +237,7 @@
 			<failsOnError>true</failsOnError>
 			<linkXRef>false</linkXRef>
 		    </configuration>
-		    <executions>
+		    <!--<executions>
 			<execution>
 			    <id>validate</id>
 			    <phase>validate</phase>
@@ -245,7 +245,7 @@
 				<goal>check</goal>
 			    </goals>
 			</execution>
-		    </executions>
+		    </executions>-->
 		</plugin>
             </plugins>
         </pluginManagement>

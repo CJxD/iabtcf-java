@@ -52,7 +52,6 @@ import static com.iabtcf.utils.FieldDefs.PPTC_CUSTOM_PURPOSES_LI_TRANSPARENCY;
 import static com.iabtcf.utils.FieldDefs.PPTC_PUB_PURPOSES_CONSENT;
 import static com.iabtcf.utils.FieldDefs.PPTC_PUB_PURPOSES_LI_TRANSPARENCY;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -60,13 +59,14 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.iabtcf.exceptions.InvalidRangeFieldException;
 import com.iabtcf.utils.BitReader;
 import com.iabtcf.utils.BitSetIntIterable;
 import com.iabtcf.utils.FieldDefs;
+import com.iabtcf.utils.Function;
 import com.iabtcf.utils.IntIterable;
+import com.iabtcf.utils.Optional;
 import com.iabtcf.v2.PublisherRestriction;
 import com.iabtcf.v2.RestrictionType;
 import com.iabtcf.v2.SegmentType;
@@ -74,8 +74,8 @@ import com.iabtcf.v2.SegmentType;
 class TCStringV2 implements TCString {
 
     private int version;
-    private Instant consentRecordCreated;
-    private Instant consentRecordLastUpdated;
+    private long consentRecordCreated;
+    private long consentRecordLastUpdated;
     private int consentManagerProviderId;
     private int consentManagerProviderVersion;
     private int consentScreen;
@@ -174,7 +174,12 @@ class TCStringV2 implements TCString {
             Optional<FieldDefs> maxVendor) {
         int numberOfVendorEntries = bbv.readBits12(numberOfVendorEntriesOffset);
         int offset = numberOfVendorEntriesOffset + FieldDefs.NUM_ENTRIES.getLength(bbv);
-        int maxV = maxVendor.map(maxVF -> bbv.readBits16(maxVF)).orElse(Integer.MAX_VALUE);
+        int maxV = maxVendor.map(new Function<FieldDefs, Integer>() {
+            @Override
+            public Integer apply(FieldDefs fieldDefs) {
+                return bbv.readBits16(fieldDefs);
+            }
+        }).orElse(Integer.MAX_VALUE);
 
         for (int j = 0; j < numberOfVendorEntries; j++) {
             boolean isRangeEntry = bbv.readBits1(offset++);
@@ -259,17 +264,17 @@ class TCStringV2 implements TCString {
     }
 
     @Override
-    public Instant getCreated() {
+    public long getCreated() {
         if (cache.add(CORE_CREATED)) {
-            consentRecordCreated = Instant.ofEpochMilli(bbv.readBits36(CORE_CREATED) * 100);
+            consentRecordCreated = bbv.readBits36(CORE_CREATED);
         }
         return consentRecordCreated;
     }
 
     @Override
-    public Instant getLastUpdated() {
+    public long getLastUpdated() {
         if (cache.add(CORE_LAST_UPDATED)) {
-            consentRecordLastUpdated = Instant.ofEpochMilli(bbv.readBits36(CORE_LAST_UPDATED) * 100);
+            consentRecordLastUpdated = bbv.readBits36(CORE_LAST_UPDATED);
         }
         return consentRecordLastUpdated;
     }

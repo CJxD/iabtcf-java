@@ -35,8 +35,8 @@ public class PPCStringTest {
         PPCString decode = PPCString.decode("BOxgOqAOxgOqAAAABBENC2-AAAAtHAA");
 
         assertEquals(decode.getVersion(), 1);
-        assertEquals(Instant.parse("2020-04-07T20:36:16.000Z"), decode.getCreated());
-        assertEquals(Instant.parse("2020-04-07T20:36:16.000Z"), decode.getLastUpdated());
+        assertEquals(Instant.parse("2020-04-07T20:36:16.000Z"), Instant.ofEpochMilli(decode.getCreated() * 100));
+        assertEquals(Instant.parse("2020-04-07T20:36:16.000Z"), Instant.ofEpochMilli(decode.getLastUpdated() * 100));
         assertEquals(0, decode.getCmpId());
         assertEquals(1, decode.getCmpVersion());
         assertEquals(1, decode.getConsentScreen());

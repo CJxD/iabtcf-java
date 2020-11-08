@@ -20,8 +20,6 @@ package com.iabtcf.utils;
  * #L%
  */
 
-import java.util.function.Function;
-
 /**
  * This enum defines all V1 and V2 consent string fields with their offsets and lengths. Since some
  * fields have dynamic values, the offset and length methods are a function of ByteBitVector
@@ -153,36 +151,36 @@ public enum FieldDefs {
         }
     });
 
-    private OffsetSupplier offset;
-    private LengthSupplier length;
+    private final OffsetSupplier offset;
+    private final LengthSupplier length;
     private boolean isDynamic = false;
     private boolean isDynamicInit = false;
 
     FieldDefs(int length, FieldDefs field) {
         assert field != this;
 
-        this.length = LengthSupplier.constant(length);
-        this.offset = OffsetSupplier.from(field);
+        this.length = LengthSupplierBuilder.constant(length);
+        this.offset = OffsetSupplierBuilder.from(field);
     }
 
     FieldDefs(int length, OffsetSupplier offset) {
-        this.length = LengthSupplier.constant(length);
+        this.length = LengthSupplierBuilder.constant(length);
         this.offset = offset;
     }
 
     FieldDefs(final int length, int offset) {
-        this.length = LengthSupplier.constant(length);
-        this.offset = OffsetSupplier.constant(offset);
+        this.length = LengthSupplierBuilder.constant(length);
+        this.offset = OffsetSupplierBuilder.constant(offset);
     }
 
     FieldDefs(LengthSupplier length) {
         this.length = length;
-        this.offset = OffsetSupplier.fromPrevious(this);
+        this.offset = OffsetSupplierBuilder.fromPrevious(this);
     }
 
     FieldDefs(final int length) {
-        this.length = LengthSupplier.constant(length);
-        this.offset = OffsetSupplier.fromPrevious(this);
+        this.length = LengthSupplierBuilder.constant(length);
+        this.offset = OffsetSupplierBuilder.fromPrevious(this);
     }
 
     /**
@@ -284,6 +282,11 @@ public enum FieldDefs {
             }
         };
 
+        boolean isDynamic();
+    }
+
+    private static class OffsetSupplierBuilder {
+
         /**
          * A constant offset for static fields.
          */
@@ -339,11 +342,13 @@ public enum FieldDefs {
                 }
             };
         }
-
-        boolean isDynamic();
     }
 
     private interface LengthSupplier extends Function<BitReader, Integer> {
+        boolean isDynamic();
+    }
+
+    private static class LengthSupplierBuilder {
 
         /**
          * A constant length for static fields.
@@ -362,8 +367,6 @@ public enum FieldDefs {
                 }
             };
         }
-
-        boolean isDynamic();
     }
 
     /**

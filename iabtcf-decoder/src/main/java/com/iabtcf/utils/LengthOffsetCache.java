@@ -21,7 +21,6 @@ package com.iabtcf.utils;
  */
 
 import java.util.EnumMap;
-import java.util.function.Function;
 
 class LengthOffsetCache {
     private final BitReader bbv;

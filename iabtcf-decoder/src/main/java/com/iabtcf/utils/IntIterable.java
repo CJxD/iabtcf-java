@@ -1,12 +1,10 @@
 package com.iabtcf.utils;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
+import java.util.function.IntPredicate;
 
 /*-
  * #%L
@@ -28,8 +26,6 @@ import java.util.stream.StreamSupport;
  * #L%
  */
 
-import java.util.Arrays;
-
 /**
  * An int primitive memory optimized iterable.
  */
@@ -47,15 +43,6 @@ public abstract class IntIterable implements Iterable<Integer> {
         return ts;
     }
 
-    /**
-     * Returns a stream representation of the IntIterable.
-     */
-    public IntStream toStream() {
-        return StreamSupport.intStream(Spliterators.spliteratorUnknownSize(
-                intIterator(),
-                Spliterator.ORDERED | Spliterator.IMMUTABLE | Spliterator.NONNULL), false);
-    }
-
     public boolean isEmpty() {
         return !intIterator().hasNext();
     }
@@ -63,13 +50,23 @@ public abstract class IntIterable implements Iterable<Integer> {
     public boolean containsAll(int... source) {
         return Arrays
                 .stream(source)
-                .allMatch(this::contains);
+                .allMatch(new IntPredicate() {
+                    @Override
+                    public boolean test(int i) {
+                        return contains(i);
+                    }
+                });
     }
 
     public boolean containsAny(int... source) {
         return Arrays
                 .stream(source)
-                .anyMatch(this::contains);
+                .anyMatch(new IntPredicate() {
+                    @Override
+                    public boolean test(int i) {
+                        return contains(i);
+                    }
+                });
     }
 
     public abstract boolean contains(int value);

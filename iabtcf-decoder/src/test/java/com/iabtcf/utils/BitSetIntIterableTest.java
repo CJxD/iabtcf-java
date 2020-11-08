@@ -42,7 +42,6 @@ public class BitSetIntIterableTest {
         assertFalse(e.contains(0));
         assertFalse(e.intIterator().hasNext());
         assertEquals(0, e.toSet().size());
-        assertEquals(0, e.toStream().count());
     }
 
     @Test
@@ -53,7 +52,6 @@ public class BitSetIntIterableTest {
         assertTrue(e.contains(0));
         assertTrue(e.intIterator().hasNext());
         assertEquals(1, e.toSet().size());
-        assertEquals(1, e.toStream().count());
     }
 
     @Test
@@ -65,7 +63,6 @@ public class BitSetIntIterableTest {
         assertTrue(e.contains(5));
         assertTrue(e.intIterator().hasNext());
         assertEquals(1, e.toSet().size());
-        assertEquals(1, e.toStream().count());
     }
 
     @Test
@@ -79,7 +76,6 @@ public class BitSetIntIterableTest {
         assertFalse(e.contains(5));
         assertTrue(e.intIterator().hasNext());
         assertEquals(2, e.toSet().size());
-        assertEquals(2, e.toStream().count());
         assertEquals(new TreeSet<>(Arrays.asList(0, 4)), e.toSet());
     }
 
@@ -97,7 +93,6 @@ public class BitSetIntIterableTest {
         assertFalse(e.contains(10));
         assertTrue(e.intIterator().hasNext());
         assertEquals(3, e.toSet().size());
-        assertEquals(3, e.toStream().count());
         assertEquals(new TreeSet<>(Arrays.asList(0, 4, 5)), e.toSet());
     }
 
@@ -165,27 +160,18 @@ public class BitSetIntIterableTest {
     }
 
     @Test
-    public void testToEmptyStream() {
-        BitSet bs = new BitSet();
-        BitSetIntIterable e = BitSetIntIterable.from(bs);
-        assertStreamEquals(new TreeSet<>(Arrays.asList()).stream(), e.toStream());
-    }
-
-    @Test
     public void testToStream() {
         BitSet bs = new BitSet();
         bs.set(1);
         bs.set(4);
         bs.set(5);
         BitSetIntIterable e = BitSetIntIterable.from(bs);
-        assertStreamEquals(new TreeSet<>(Arrays.asList(1, 4, 5)).stream(), e.toStream());
         assertFalse(e.isEmpty());
     }
 
     @Test
     public void testOf() {
         BitSetIntIterable e = BitSetIntIterable.from(1, 2, 3);
-        assertStreamEquals(new TreeSet<>(Arrays.asList(1, 2, 3)).stream(), e.toStream());
     }
 
     @Test
@@ -198,7 +184,7 @@ public class BitSetIntIterableTest {
         //when
         BitSetIntIterable e = BitSetIntIterable.from(input);
         //then
-        assertStreamEquals(new TreeSet<>(Arrays.asList(1, 2, 3)).stream(), e.toStream());
+        assertEquals(new TreeSet<>(Arrays.asList(1, 2, 3)), e.toSet());
     }
 
     @Test
@@ -226,7 +212,7 @@ public class BitSetIntIterableTest {
         for (Iterator<Integer> i = e.iterator(); i.hasNext();) {
             expected.contains(i.next());
         }
-        assertStreamEquals(expected.stream(), e.toStream());
+        assertEquals(expected, e.toSet());
     }
 
 

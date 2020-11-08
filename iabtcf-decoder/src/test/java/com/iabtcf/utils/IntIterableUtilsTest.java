@@ -41,17 +41,4 @@ public class IntIterableUtilsTest {
         IntIterable ii = BitSetIntIterable.from(bs);
         assertEquals(new TreeSet<>(Arrays.asList(0, 1, 512)), ii.toSet());
     }
-
-    @Test
-    public void testToStream() {
-        BitSet bs = new BitSet();
-        bs.set(0);
-        bs.set(1);
-        bs.set(512);
-
-        IntIterable ii = BitSetIntIterable.from(bs);
-        Set<Integer> l = ii.toStream().boxed().collect(Collectors.toSet());
-
-        assertEquals(new TreeSet<>(Arrays.asList(0, 1, 512)), l);
-    }
 }

@@ -32,17 +32,16 @@ import static com.iabtcf.utils.FieldDefs.V1_VENDOR_LIST_VERSION;
 import static com.iabtcf.utils.FieldDefs.V1_VENDOR_MAX_VENDOR_ID;
 import static com.iabtcf.utils.FieldDefs.V1_VERSION;
 
-import java.time.Instant;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.iabtcf.exceptions.InvalidRangeFieldException;
 import com.iabtcf.utils.BitReader;
 import com.iabtcf.utils.BitSetIntIterable;
 import com.iabtcf.utils.FieldDefs;
 import com.iabtcf.utils.IntIterable;
+import com.iabtcf.utils.Optional;
 import com.iabtcf.v2.PublisherRestriction;
 
 class TCStringV1 implements TCString {
@@ -63,13 +62,13 @@ class TCStringV1 implements TCString {
     }
 
     @Override
-    public Instant getCreated() {
-        return Instant.ofEpochMilli(bbv.readBits36(V1_CREATED) * 100);
+    public long getCreated() {
+        return bbv.readBits36(V1_CREATED);
     }
 
     @Override
-    public Instant getLastUpdated() {
-        return Instant.ofEpochMilli(bbv.readBits36(V1_LAST_UPDATED) * 100);
+    public long getLastUpdated() {
+        return bbv.readBits36(V1_LAST_UPDATED);
     }
 
     @Override

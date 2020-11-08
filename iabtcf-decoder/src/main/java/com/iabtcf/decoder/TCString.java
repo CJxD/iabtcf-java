@@ -20,28 +20,13 @@ package com.iabtcf.decoder;
  * #L%
  */
 
-import java.time.Instant;
 import java.util.List;
 
-import com.iabtcf.exceptions.ByteParseException;
 import com.iabtcf.exceptions.TCStringDecodeException;
-import com.iabtcf.exceptions.UnsupportedVersionException;
 import com.iabtcf.utils.IntIterable;
 import com.iabtcf.v2.PublisherRestriction;
 
 public interface TCString {
-
-    /**
-     * Decodes an iabtcf compliant encoded string.
-     *
-     * @throws ByteParseException if version field failed to parse
-     * @throws UnsupportedVersionException invalid version field
-     * @throws IllegalArgumentException if consentString is not in valid Base64 scheme
-     */
-    static TCString decode(String consentString, DecoderOption... options)
-            throws IllegalArgumentException, ByteParseException, UnsupportedVersionException {
-        return TCStringDecoder.decode(consentString, options);
-    }
 
     /**
      * Version number of the encoding format
@@ -59,7 +44,7 @@ public interface TCString {
      * @throws TCStringDecodeException
      * @return timestamp the record was first created
      */
-    Instant getCreated();
+    long getCreated();
 
     /**
      * Epoch deciseconds (0.1 of a second) when TC String was last updated
@@ -68,7 +53,7 @@ public interface TCString {
      * @throws TCStringDecodeException
      * @return timestamp record was last updated
      */
-    Instant getLastUpdated();
+    long getLastUpdated();
 
     /**
      * Consent Management Platform ID that last updated the TC String
